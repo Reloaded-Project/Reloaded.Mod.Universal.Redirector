@@ -18,7 +18,7 @@ public unsafe class FileAccessServer
     private static IHook<Native.NtCreateFile> _ntCreateFileHook = null!;
     private static IHook<Native.NtQueryAttributesFile> _ntQueryAttributesFileHook = null!;
     private const string _prefix = "\\??\\";
-    
+
     [ThreadStatic]
     private static bool _inQueryAttributesFile;
 
@@ -42,14 +42,14 @@ public unsafe class FileAccessServer
 
         if (ntQueryAttributesFilePointer != IntPtr.Zero)
             _ntQueryAttributesFileHook = hooks.CreateHook<Native.NtQueryAttributesFile>(
-                (delegate* unmanaged[Stdcall]<Native.OBJECT_ATTRIBUTES*, uint, int>) &NtQueryAttributesFileHookFn,
+                (delegate* unmanaged[Stdcall]<Native.OBJECT_ATTRIBUTES*, IntPtr, int>) &NtQueryAttributesFileHookFn,
                 (long) ntQueryAttributesFilePointer).Activate();
     }
 
     /* Hooks */
 
     [UnmanagedCallersOnly(CallConvs = new[] { typeof(CallConvStdcall) })]
-    private static int NtQueryAttributesFileHookFn(Native.OBJECT_ATTRIBUTES* objectAttributes, uint fileAttributes)
+    private static int NtQueryAttributesFileHookFn(Native.OBJECT_ATTRIBUTES* objectAttributes, IntPtr fileAttributes)
     {
         if (_inQueryAttributesFile)
             return _ntQueryAttributesFileHook.OriginalFunction.Value.Invoke(objectAttributes, fileAttributes);

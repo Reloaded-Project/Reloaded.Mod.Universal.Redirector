@@ -20,10 +20,10 @@ internal class Native
         public FuncPtr
         <
             BlittablePointer<IntPtr>,               // handle
-            FileAccess,                             // access 
+            FileAccess,                             // access
             BlittablePointer<OBJECT_ATTRIBUTES>,    // objectAttributes
             BlittablePointer<IO_STATUS_BLOCK>,      // ioStatus
-            BlittablePointer<long>,                 // allocSize 
+            BlittablePointer<long>,                 // allocSize
             uint,                                   // fileAttributes
             FileShare,                              // share
             uint,                                   // createDisposition
@@ -31,9 +31,9 @@ internal class Native
             IntPtr,                                 // eaBuffer
             uint,                                   // eaLength
             int                                     // Return Value
-        >Value;    
+        >Value;
     }
-    
+
     /// <summary>
     /// Retrieves basic attributes for the specified file object.
     /// (The description here is a partial, lazy copy from MSDN)
@@ -45,9 +45,9 @@ internal class Native
         public FuncPtr
         <
             BlittablePointer<OBJECT_ATTRIBUTES>,    // objectAttributes
-            uint,                                   // fileAttributes
+            IntPtr,                                 // fileAttributes
             int                                     // Return Value
-        >Value;    
+        >Value;
     }
 
     /// <summary>
@@ -104,7 +104,7 @@ internal class Native
         /// </summary>
         public IntPtr SecurityQualityOfService;
     }
-    
+
     /// <summary>
     /// Represents a singular unicode string.
     /// </summary>
